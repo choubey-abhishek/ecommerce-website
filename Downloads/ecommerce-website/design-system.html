@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kopal Seth Studio — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Primitives */
+    --ink:#111111; --charcoal:#1A1A1A; --paper:#FFFFFF;
+    --clay-50:#FBF7F2; --clay-100:#F5EDE2; --clay-200:#EADCC8; --clay-300:#DCC6A6;
+    --clay-400:#C9A97D; --clay-500:#B48B5C; --clay-600:#9A7148; --clay-700:#7C5A38;
+    --terracotta-50:#FBEEE8; --terracotta-100:#EFDACB; --terracotta-300:#D8A582;
+    --terracotta-500:#B76E4D; --terracotta-600:#9C5A3C; --terracotta-700:#7E4831;
+    --sand-50:#FAF8F5; --sand-100:#F2EDE6; --sand-200:#E5DCCE; --sand-300:#D5C8B4;
+    --stone-50:#F7F6F4; --stone-100:#ECEBE8; --stone-200:#D9D7D1; --stone-300:#B8B5AD;
+    --stone-400:#8A8880; --stone-500:#6B6A64; --stone-600:#52514C; --stone-700:#3A3935;
+    /* Semantic */
+    --success-50:#F1F5EC; --success-100:#E1EAD6; --success-300:#B9C99E; --success-500:#6E8B57; --success-600:#56703F; --success-700:#415530;
+    --warning-50:#FBF3E1; --warning-100:#F6E7C2; --warning-300:#E4C275; --warning-500:#C08A2E; --warning-600:#9A6C1C; --warning-700:#78530F;
+    --error-50:#FBEBE6; --error-100:#F6D8CC; --error-300:#E1A48A; --error-500:#C0553A; --error-600:#A2402A; --error-700:#7E3021;
+    --info-50:#EEF1F4; --info-100:#DCE3EA; --info-500:#5B7186; --info-600:#45596B;
+    /* Roles */
+    --bg-base:var(--paper); --bg-subtle:var(--sand-50); --bg-inverse:var(--ink);
+    --surface:var(--paper); --surface-subtle:var(--sand-50); --surface-sunken:var(--sand-100);
+    --text-primary:var(--ink); --text-secondary:var(--stone-600); --text-muted:var(--stone-500); --text-disabled:var(--stone-400);
+    --border-subtle:rgba(17,17,17,0.06); --border-default:rgba(17,17,17,0.12); --border-strong:rgba(17,17,17,0.20);
+    --border-focus:var(--clay-500);
+    /* Radius */
+    --radius-xs:4px; --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:24px; --radius-2xl:32px; --radius-full:9999px;
+    /* Shadow */
+    --shadow-xs:0 1px 2px rgba(17,17,17,0.04);
+    --shadow-card:0 10px 40px -10px rgba(17,17,17,0.12);
+    --shadow-soft:0 20px 60px -15px rgba(17,17,17,0.15);
+    --shadow-glass:0 8px 32px 0 rgba(17,17,17,0.08);
+    --shadow-lift:0 30px 80px -20px rgba(17,17,17,0.22);
+    /* Motion */
+    --ease-studio:cubic-bezier(0.22,1,0.36,1);
+    --font-serif:"Fraunces",Georgia,serif; --font-sans:"Inter",system-ui,sans-serif;
+  }
+
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:var(--font-sans); color:var(--text-primary);
+    background:var(--bg-base); -webkit-font-smoothing:antialiased; line-height:1.65;
+  }
+  a { color:inherit; }
+  :focus-visible { outline:2px solid var(--border-focus); outline-offset:3px; border-radius:2px; }
+
+  .wrap { max-width:1152px; margin:0 auto; padding:0 24px; }
+  @media(min-width:640px){ .wrap{ padding:0 40px; } }
+
+  /* Header */
+  header.masthead {
+    padding:96px 0 64px; border-bottom:1px solid var(--border-subtle);
+    background:linear-gradient(180deg,var(--sand-50),var(--paper));
+  }
+  .eyebrow { font-size:12px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); font-weight:500; }
+  header.masthead h1 {
+    font-family:var(--font-serif); font-weight:300; letter-spacing:-0.02em; line-height:0.98;
+    font-size:clamp(3rem,7vw,6rem); margin:20px 0 16px;
+  }
+  header.masthead p { color:var(--text-secondary); max-width:56ch; font-size:17px; line-height:1.7; }
+
+  /* TOC */
+  nav.toc { position:sticky; top:0; z-index:20; background:rgba(255,255,255,0.72);
+    backdrop-filter:blur(16px) saturate(180%); border-bottom:1px solid var(--border-subtle); }
+  nav.toc .wrap { display:flex; gap:6px; overflow-x:auto; padding-top:14px; padding-bottom:14px; }
+  nav.toc a { font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted);
+    text-decoration:none; white-space:nowrap; padding:8px 14px; border-radius:var(--radius-full); transition:all .3s var(--ease-studio); }
+  nav.toc a:hover { background:var(--clay-50); color:var(--text-primary); }
+
+  section.block { padding:72px 0; border-bottom:1px solid var(--border-subtle); }
+  .section-head { margin-bottom:40px; }
+  .section-head h2 { font-family:var(--font-serif); font-weight:400; font-size:clamp(2rem,4vw,2.75rem);
+    letter-spacing:-0.01em; line-height:1.1; }
+  .section-head p { color:var(--text-muted); margin-top:10px; max-width:60ch; }
+
+  .grid { display:grid; gap:20px; }
+  .cols-2 { grid-template-columns:repeat(2,1fr); }
+  .cols-3 { grid-template-columns:repeat(3,1fr); }
+  .cols-4 { grid-template-columns:repeat(4,1fr); }
+  @media(max-width:900px){ .cols-3,.cols-4{ grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .cols-2,.cols-3,.cols-4{ grid-template-columns:1fr;} }
+
+  /* Swatches */
+  .swatch { border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--border-subtle); background:var(--surface); }
+  .swatch .chip { height:88px; }
+  .swatch .meta { padding:12px 14px; }
+  .swatch .name { font-size:13px; font-weight:500; }
+  .swatch .hex { font-size:12px; color:var(--text-muted); font-variant-numeric:tabular-nums; text-transform:uppercase; }
+  .ramp { display:grid; grid-template-columns:repeat(8,1fr); border-radius:var(--radius-lg); overflow:hidden;
+    border:1px solid var(--border-subtle); }
+  @media(max-width:720px){ .ramp{ grid-template-columns:repeat(4,1fr);} }
+  .ramp .step { padding:18px 10px 12px; display:flex; flex-direction:column; gap:4px; min-height:92px; justify-content:flex-end; }
+  .ramp .step small { font-size:11px; opacity:.85; }
+  .ramp .step b { font-size:11px; font-weight:600; letter-spacing:.02em; }
+  .ramp-label { font-size:13px; font-weight:500; margin:0 0 8px; display:flex; gap:10px; align-items:baseline; }
+  .ramp-label span { color:var(--text-muted); font-weight:400; font-size:12px; }
+
+  .role-row { display:flex; align-items:center; gap:16px; padding:12px 0; border-top:1px solid var(--border-subtle); }
+  .role-row .dot { width:40px; height:40px; border-radius:var(--radius-md); border:1px solid var(--border-subtle); flex:none; }
+  .role-row .rk { font-size:13px; font-weight:500; min-width:180px; }
+  .role-row .rv { font-size:13px; color:var(--text-muted); }
+  .badge-aa { margin-left:auto; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--success-600);
+    background:var(--success-100); padding:3px 10px; border-radius:var(--radius-full); font-weight:500; }
+
+  /* Type specimens */
+  .type-row { display:flex; align-items:baseline; gap:24px; padding:18px 0; border-top:1px solid var(--border-subtle); flex-wrap:wrap; }
+  .type-row .tk { width:130px; flex:none; font-size:12px; color:var(--text-muted); letter-spacing:.04em; text-transform:uppercase; }
+  .serif { font-family:var(--font-serif); }
+  .d-xl{ font-family:var(--font-serif); font-weight:300; font-size:clamp(3rem,7vw,5rem); letter-spacing:-.02em; line-height:.98;}
+  .d-lg{ font-family:var(--font-serif); font-weight:300; font-size:clamp(2.5rem,5vw,3.5rem); letter-spacing:-.015em; line-height:1.02;}
+  .d-md{ font-family:var(--font-serif); font-weight:300; font-size:clamp(2rem,4vw,2.75rem); letter-spacing:-.01em; line-height:1.05;}
+  .t-h2{ font-family:var(--font-serif); font-weight:400; font-size:2rem; line-height:1.15;}
+  .t-h3{ font-family:var(--font-serif); font-weight:400; font-size:1.5rem; line-height:1.25;}
+  .t-h4{ font-family:var(--font-serif); font-weight:500; font-size:1.25rem;}
+  .t-body-lg{ font-size:17px; line-height:1.7;}
+  .t-body{ font-size:16px; line-height:1.65;}
+  .t-caption{ font-size:13px; color:var(--text-muted);}
+  .t-overline{ font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-muted); font-weight:500;}
+
+  /* Spacing */
+  .space-row { display:flex; align-items:center; gap:16px; padding:8px 0; }
+  .space-row .bar { height:16px; background:var(--clay-300); border-radius:var(--radius-xs); }
+  .space-row .lbl { font-size:12px; color:var(--text-muted); width:120px; font-variant-numeric:tabular-nums; }
+
+  /* Radius / shadow tiles */
+  .tile { background:var(--surface); border:1px solid var(--border-subtle); padding:20px; border-radius:var(--radius-lg);
+    display:flex; flex-direction:column; gap:14px; align-items:center; text-align:center; }
+  .tile .demo { width:100%; height:80px; background:var(--sand-100); }
+  .tile .tname { font-size:13px; font-weight:500; }
+  .tile .tval { font-size:12px; color:var(--text-muted); }
+  .shadow-tile .demo { background:var(--surface); border-radius:var(--radius-lg); }
+
+  /* Buttons */
+  .btn { font-family:var(--font-sans); text-transform:uppercase; letter-spacing:.2em; font-weight:500; font-size:13px;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; border:none;
+    border-radius:var(--radius-full); height:48px; padding:0 28px; transition:all .3s var(--ease-studio); }
+  .btn:active { transform:scale(.98); }
+  .btn-primary { background:var(--ink); color:#fff; }
+  .btn-primary:hover { background:var(--charcoal); }
+  .btn-secondary { background:var(--clay-100); color:var(--ink); }
+  .btn-secondary:hover { background:var(--clay-200); }
+  .btn-outline { background:transparent; color:var(--ink); border:1px solid var(--border-strong); }
+  .btn-outline:hover { background:var(--ink); color:#fff; }
+  .btn-ghost { background:transparent; color:var(--text-secondary); }
+  .btn-ghost:hover { color:var(--ink); background:var(--sand-50); }
+  .btn-link { background:transparent; color:var(--ink); height:auto; padding:4px 2px; text-underline-offset:4px; letter-spacing:.15em; }
+  .btn-link:hover { text-decoration:underline; }
+  .btn-destructive { background:var(--error-600); color:#fff; }
+  .btn-destructive:hover { background:var(--error-700); }
+  .btn-sm { height:36px; padding:0 16px; font-size:11px; }
+  .btn-lg { height:56px; padding:0 36px; font-size:14px; letter-spacing:.15em; }
+  .btn-icon { width:44px; height:44px; padding:0; }
+  .btn:disabled, .btn.is-disabled { opacity:.4; pointer-events:none; }
+  .btn-cluster { display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+  .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%;
+    animation:spin .7s linear infinite; }
+  @keyframes spin { to{ transform:rotate(360deg);} }
+
+  /* Inputs */
+  .field { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+  .field label { font-size:13px; font-weight:500; letter-spacing:.02em; }
+  .input { height:48px; border:1px solid var(--border-default); background:var(--surface); border-radius:var(--radius-md);
+    padding:0 16px; font-family:var(--font-sans); font-size:15px; color:var(--text-primary); transition:all .2s var(--ease-studio); width:100%; }
+  .input::placeholder { color:var(--text-muted); }
+  .input:focus { outline:none; border-color:var(--border-focus); box-shadow:0 0 0 3px rgba(180,139,92,.18); }
+  .input.pill { border-radius:var(--radius-full); padding:0 20px; }
+  .input.err { border-color:var(--error-500); }
+  .input:disabled { background:var(--sand-50); color:var(--text-disabled); cursor:not-allowed; }
+  textarea.input { height:auto; min-height:110px; padding:14px 16px; resize:vertical; }
+  .help { font-size:13px; color:var(--text-muted); }
+  .help.err { color:var(--error-600); }
+  .checkline { display:flex; align-items:center; gap:10px; font-size:15px; }
+  .checkbox { width:20px; height:20px; border-radius:var(--radius-sm); border:1px solid var(--border-strong); flex:none;
+    display:inline-flex; align-items:center; justify-content:center; background:var(--ink); color:#fff; }
+  .radio { width:20px; height:20px; border-radius:var(--radius-full); border:1px solid var(--border-strong); flex:none;
+    display:inline-flex; align-items:center; justify-content:center; }
+  .radio::after { content:""; width:9px; height:9px; border-radius:50%; background:var(--ink); }
+  .radio.off { border-color:var(--border-default); }
+  .radio.off::after { display:none; }
+  .stepper { display:inline-flex; align-items:center; border:1px solid var(--border-default); border-radius:var(--radius-full); }
+  .stepper button { width:44px; height:44px; background:transparent; border:none; cursor:pointer; font-size:18px; color:var(--ink); }
+  .stepper span { min-width:36px; text-align:center; font-variant-numeric:tabular-nums; font-size:15px; }
+
+  /* Cards */
+  .card { background:var(--surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:28px;
+    transition:all .3s var(--ease-studio); }
+  .card.interactive:hover { transform:translateY(-2px); box-shadow:var(--shadow-soft); }
+  .card.feature { background:var(--surface-subtle); border-color:transparent; }
+  .product-card .ph { aspect-ratio:4/5; background:linear-gradient(135deg,var(--clay-100),var(--sand-200));
+    border-radius:var(--radius-xl); position:relative; overflow:hidden; }
+  .product-card .ph .actions { position:absolute; inset:auto 12px 12px; display:flex; gap:8px; }
+  .product-card h4 { font-family:var(--font-serif); font-weight:400; font-size:19px; margin-top:16px; }
+  .product-card .dim { font-size:13px; color:var(--text-muted); margin-top:2px; }
+  .product-card .price { font-size:15px; margin-top:8px; }
+  .stat-card .lbl { font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-muted); font-weight:500; }
+  .stat-card .val { font-family:var(--font-serif); font-weight:300; font-size:34px; margin-top:10px; }
+  .stat-card .delta { font-size:13px; margin-top:6px; color:var(--success-600); }
+
+  /* Pills / badges */
+  .pill { display:inline-flex; align-items:center; gap:6px; font-size:12px; letter-spacing:.04em; padding:4px 12px;
+    border-radius:var(--radius-full); font-weight:500; }
+  .pill.success { background:var(--success-100); color:var(--success-700); }
+  .pill.warning { background:var(--warning-100); color:var(--warning-700); }
+  .pill.error { background:var(--error-100); color:var(--error-700); }
+  .pill.info { background:var(--info-100); color:var(--info-600); }
+  .pill.neutral { background:var(--stone-100); color:var(--text-secondary); }
+
+  /* Modal */
+  .overlay { position:fixed; inset:0; background:rgba(17,17,17,.4); backdrop-filter:blur(2px);
+    display:none; align-items:center; justify-content:center; z-index:80; padding:24px; }
+  .overlay.open { display:flex; animation:fade .25s var(--ease-studio); }
+  @keyframes fade { from{opacity:0} to{opacity:1} }
+  .modal { background:var(--surface); border-radius:var(--radius-2xl); box-shadow:var(--shadow-lift); max-width:512px; width:100%;
+    padding:32px; animation:pop .25s var(--ease-studio); }
+  @keyframes pop { from{opacity:0; transform:scale(.96)} to{opacity:1; transform:scale(1)} }
+  .modal-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+  .modal h3 { font-family:var(--font-serif); font-weight:400; font-size:24px; }
+  .modal p.sub { color:var(--text-muted); font-size:13px; margin-top:6px; }
+  .modal .body { margin:20px 0 28px; color:var(--text-secondary); font-size:15px; }
+  .modal .foot { display:flex; gap:12px; justify-content:flex-end; }
+  .x { width:44px; height:44px; border:none; background:transparent; cursor:pointer; font-size:20px; color:var(--text-muted);
+    border-radius:var(--radius-full); }
+  .x:hover { background:var(--sand-50); color:var(--ink); }
+
+  /* Dropdown */
+  .menu { width:240px; background:var(--surface); border:1px solid var(--border-subtle); border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card); padding:6px; }
+  .menu .mlabel { font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-muted); padding:8px 12px 4px; font-weight:500; }
+  .menu .mitem { display:flex; align-items:center; gap:10px; height:36px; padding:0 12px; border-radius:var(--radius-md);
+    font-size:15px; cursor:pointer; transition:background .15s var(--ease-studio); }
+  .menu .mitem:hover { background:var(--sand-50); }
+  .menu .mitem.sel { font-weight:500; }
+  .menu .mitem.sel::after { content:"✓"; margin-left:auto; color:var(--clay-600); }
+  .menu .sep { height:1px; background:var(--border-subtle); margin:6px 4px; }
+
+  /* Toasts */
+  .toast { display:flex; gap:12px; align-items:flex-start; background:var(--surface); border:1px solid var(--border-subtle);
+    border-radius:var(--radius-lg); box-shadow:var(--shadow-lift); padding:16px; width:360px; max-width:100%; position:relative; overflow:hidden; }
+  .toast::before { content:""; position:absolute; left:0; top:0; bottom:0; width:4px; }
+  .toast.success::before { background:var(--success-500); }
+  .toast.warning::before { background:var(--warning-500); }
+  .toast.error::before { background:var(--error-500); }
+  .toast.info::before { background:var(--info-500); }
+  .toast .ticon { width:32px; height:32px; border-radius:var(--radius-full); flex:none; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .toast.success .ticon { background:var(--success-100); color:var(--success-600); }
+  .toast.warning .ticon { background:var(--warning-100); color:var(--warning-600); }
+  .toast.error .ticon { background:var(--error-100); color:var(--error-600); }
+  .toast.info .ticon { background:var(--info-100); color:var(--info-600); }
+  .toast .tbody b { font-size:14px; font-weight:500; display:block; }
+  .toast .tbody span { font-size:13px; color:var(--text-muted); }
+  .toast .tx { margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-muted); font-size:16px; }
+  #toast-stack { position:fixed; top:20px; right:20px; z-index:90; display:flex; flex-direction:column; gap:10px; }
+  .toast.live { animation:slidein .25s var(--ease-studio); }
+  @keyframes slidein { from{opacity:0; transform:translateX(24px)} to{opacity:1; transform:translateX(0)} }
+
+  .note { background:var(--surface-subtle); border:1px solid var(--border-subtle); border-radius:var(--radius-lg);
+    padding:18px 20px; font-size:14px; color:var(--text-secondary); }
+  .note b { color:var(--text-primary); }
+  .icon-demo { display:flex; gap:28px; align-items:flex-end; flex-wrap:wrap; }
+  .icon-demo .i { display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--ink); }
+  .icon-demo .i small { font-size:12px; color:var(--text-muted); }
+  svg { display:block; }
+  footer.foot { padding:56px 0 80px; color:var(--text-muted); font-size:13px; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Design System · v1.0</p>
+    <h1>Kopal Seth Studio</h1>
+    <p>A premium, editorial design language for a contemporary ceramics house — warm neutrals, an earthy accent palette, Fraunces &amp; Inter, and a quiet, gallery-like restraint. This is a living reference; every value here is a token.</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#color">Color</a>
+    <a href="#type">Typography</a>
+    <a href="#space">Spacing &amp; Grid</a>
+    <a href="#radius">Radius</a>
+    <a href="#shadow">Shadow</a>
+    <a href="#motion">Motion</a>
+    <a href="#icons">Icons</a>
+    <a href="#buttons">Buttons</a>
+    <a href="#inputs">Inputs</a>
+    <a href="#cards">Cards</a>
+    <a href="#overlays">Modal &amp; Menu</a>
+    <a href="#toasts">Toasts</a>
+  </div>
+</nav>
+
+<!-- COLOR -->
+<section class="block" id="color">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Color</h2>
+      <p>Primitive ramps map to semantic roles. Components reference roles, never raw hex. Every neutral is warm; every semantic is muted and earthy.</p>
+    </div>
+
+    <div style="display:grid; gap:22px;">
+      <div>
+        <p class="ramp-label">Clay <span>secondary — the signature warm tan</span></p>
+        <div class="ramp" id="clay"></div>
+      </div>
+      <div>
+        <p class="ramp-label">Terracotta <span>accent — burnt warm highlight</span></p>
+        <div class="ramp" id="terracotta"></div>
+      </div>
+      <div>
+        <p class="ramp-label">Sand <span>warm neutral — backgrounds &amp; surfaces</span></p>
+        <div class="ramp" id="sand"></div>
+      </div>
+      <div>
+        <p class="ramp-label">Stone <span>cool neutral — text, borders, UI greys (extended for AA)</span></p>
+        <div class="ramp" id="stone"></div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:56px;">
+      <h2 style="font-size:1.5rem;">Semantic ramps</h2>
+      <p>Success replaces the previously-undefined <code>sage</code> token; error consolidates the inconsistent terracotta/clay error colors.</p>
+    </div>
+    <div style="display:grid; gap:22px;">
+      <div><p class="ramp-label">Success <span>earthy sage-green</span></p><div class="ramp" id="success"></div></div>
+      <div><p class="ramp-label">Warning <span>honey / amber</span></p><div class="ramp" id="warning"></div></div>
+      <div><p class="ramp-label">Error <span>deepened terracotta</span></p><div class="ramp" id="error"></div></div>
+    </div>
+
+    <div class="section-head" style="margin-top:56px;">
+      <h2 style="font-size:1.5rem;">Semantic roles</h2>
+      <p>Text roles are pre-checked for WCAG 2.2 AA on white.</p>
+    </div>
+    <div id="roles"></div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY -->
+<section class="block" id="type">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Typography</h2>
+      <p>Fraunces (serif) for display &amp; headings; Inter (sans) for body &amp; all UI chrome. Display is Light 300 with tight tracking.</p>
+    </div>
+    <div class="type-row"><div class="tk">display-xl</div><div class="d-xl">Quiet luxury</div></div>
+    <div class="type-row"><div class="tk">display-lg</div><div class="d-lg">Contemporary ceramics</div></div>
+    <div class="type-row"><div class="tk">display-md</div><div class="d-md">Hand-built vessels</div></div>
+    <div class="type-row"><div class="tk">h2 · serif 400</div><div class="t-h2">The studio process</div></div>
+    <div class="type-row"><div class="tk">h3 · serif 400</div><div class="t-h3">Amber Horizon Vessel</div></div>
+    <div class="type-row"><div class="tk">h4 · serif 500</div><div class="t-h4">Materials &amp; care</div></div>
+    <div class="type-row"><div class="tk">body-lg · inter</div><div class="t-body-lg" style="max-width:60ch;">Lead paragraph — each piece is hand-built and finished in small batches, so no two are exactly alike.</div></div>
+    <div class="type-row"><div class="tk">body · inter</div><div class="t-body" style="max-width:64ch;">Default body copy. A neutral, highly legible grotesk keeps long-form product detail and journal writing comfortable at small sizes.</div></div>
+    <div class="type-row"><div class="tk">caption</div><div class="t-caption">12″ × 12″ × 14″ · stoneware, amber reduction glaze</div></div>
+    <div class="type-row"><div class="tk">overline</div><div class="t-overline">New Arrivals</div></div>
+    <div class="type-row"><div class="tk">button</div><div style="font-size:13px; letter-spacing:.2em; text-transform:uppercase; font-weight:500;">Add to Cart</div></div>
+    <div class="type-row"><div class="tk">label</div><div style="font-size:13px; letter-spacing:.02em; font-weight:500;">Email address</div></div>
+  </div>
+</section>
+
+<!-- SPACING -->
+<section class="block" id="space">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Spacing &amp; grid</h2>
+      <p>A 4px base scale. Section rhythm is 96 → 128px; gutters 24 → 40px. Containers: narrow 768 · default 1152 · wide 1280.</p>
+    </div>
+    <div class="grid cols-2" style="align-items:start;">
+      <div>
+        <p class="t-overline" style="margin-bottom:16px;">Scale (4px base)</p>
+        <div id="spacescale"></div>
+      </div>
+      <div>
+        <p class="t-overline" style="margin-bottom:16px;">Semantic spacing</p>
+        <div class="note" style="margin-bottom:12px;"><b>Card padding</b> — 24px mobile → 32px desktop</div>
+        <div class="note" style="margin-bottom:12px;"><b>Section rhythm</b> — py 96px → 128px</div>
+        <div class="note" style="margin-bottom:12px;"><b>Page gutter</b> — 24px → 40px</div>
+        <div class="note" style="margin-bottom:12px;"><b>Stack gaps</b> — tight 8–12 · default 16–24</div>
+        <div class="note"><b>Product grid</b> — cols 2 · lg 3 · xl 4, gap-x 24 / gap-y 48 (standardized site-wide)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RADIUS -->
+<section class="block" id="radius">
+  <div class="wrap">
+    <div class="section-head"><h2>Border radius</h2><p>Soft and editorial. Buttons, pills, and search inputs are fully round; cards use large radii.</p></div>
+    <div class="grid cols-4" id="radiustiles"></div>
+  </div>
+</section>
+
+<!-- SHADOW -->
+<section class="block" id="shadow">
+  <div class="wrap">
+    <div class="section-head"><h2>Shadow</h2><p>Wide, low-opacity ink shadows — never harsh.</p></div>
+    <div class="grid cols-4" id="shadowtiles" style="background:var(--sand-50); padding:32px; border-radius:var(--radius-xl);"></div>
+  </div>
+</section>
+
+<!-- MOTION -->
+<section class="block" id="motion">
+  <div class="wrap">
+    <div class="section-head"><h2>Motion</h2><p>One easing curve, short durations, full reduced-motion support.</p></div>
+    <div class="grid cols-2" style="align-items:start;">
+      <div class="note">
+        <b>Easing</b><br/>
+        <code>ease-studio</code> — cubic-bezier(0.22, 1, 0.36, 1) · primary<br/>
+        <code>ease-standard</code> — cubic-bezier(0.4, 0, 0.2, 1) · utility<br/><br/>
+        <b>Duration</b><br/>
+        fast 150ms · base 250ms · moderate 300ms · slow 500ms · slower 800ms (reveals)
+      </div>
+      <div class="note">
+        <b>Principles.</b> Enter with fadeUp / scaleIn; exit faster than enter. Scroll reveals use <code>whileInView</code> with <code>once: true</code> and a no-JS fallback so content is never permanently hidden. Under <code>prefers-reduced-motion</code>, drop parallax, transforms, autoplay, and infinite loops — keep opacity fades ≤150ms.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ICONS -->
+<section class="block" id="icons">
+  <div class="wrap">
+    <div class="section-head"><h2>Icon system</h2><p>lucide-react only. Stroke 1.5 default, currentColor, sizes 16 / 20 / 24 / 32. Interactive icons need a label and a 44px target.</p></div>
+    <div class="icon-demo">
+      <div class="i"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 2.3a1 1 0 0 0 .7 1.7H17"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg><small>16 · sm</small></div>
+      <div class="i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 2.3a1 1 0 0 0 .7 1.7H17"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg><small>20 · md</small></div>
+      <div class="i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><small>24 · lg</small></div>
+      <div class="i"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><small>32 · xl (1.25)</small></div>
+      <div class="i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--clay-600)" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg><small>currentColor</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- BUTTONS -->
+<section class="block" id="buttons">
+  <div class="wrap">
+    <div class="section-head"><h2>Buttons</h2><p>All buttons are fully round with uppercase Inter text. One primary per view. Every CTA routes through the shared component.</p></div>
+
+    <p class="t-overline" style="margin-bottom:14px;">Variants</p>
+    <div class="btn-cluster" style="margin-bottom:36px;">
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-outline">Outline</button>
+      <button class="btn btn-ghost">Ghost</button>
+      <button class="btn btn-link">Link action</button>
+      <button class="btn btn-destructive">Destructive</button>
+    </div>
+
+    <p class="t-overline" style="margin-bottom:14px;">Sizes</p>
+    <div class="btn-cluster" style="margin-bottom:36px;">
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Medium</button>
+      <button class="btn btn-primary btn-lg">Large</button>
+      <button class="btn btn-primary btn-icon" aria-label="Add to cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+
+    <p class="t-overline" style="margin-bottom:14px;">States</p>
+    <div class="btn-cluster">
+      <button class="btn btn-primary">Default</button>
+      <button class="btn btn-primary is-disabled">Disabled</button>
+      <button class="btn btn-primary"><span class="spinner"></span> Loading</button>
+    </div>
+  </div>
+</section>
+
+<!-- INPUTS -->
+<section class="block" id="inputs">
+  <div class="wrap">
+    <div class="section-head"><h2>Inputs &amp; controls</h2><p>Field shape (radius-md) for forms; pill shape for inline/search. Visible focus ring, explicit error state, 44px targets.</p></div>
+    <div class="grid cols-2" style="align-items:start;">
+      <div>
+        <div class="field">
+          <label for="a">Email address</label>
+          <input class="input" id="a" type="email" placeholder="you@example.com" />
+          <span class="help">We'll only email about your order.</span>
+        </div>
+        <div class="field">
+          <label for="b">Coupon code</label>
+          <input class="input err" id="b" value="EXPIRED10" />
+          <span class="help err">That code isn't valid.</span>
+        </div>
+        <div class="field">
+          <label for="c">Search (pill)</label>
+          <input class="input pill" id="c" type="search" placeholder="Search the collection" />
+        </div>
+        <div class="field">
+          <label for="d">Disabled</label>
+          <input class="input" id="d" value="Not editable" disabled />
+        </div>
+      </div>
+      <div>
+        <div class="field">
+          <label for="e">Message</label>
+          <textarea class="input" id="e" placeholder="Tell us about your space…"></textarea>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:24px;">
+          <div class="checkline"><span class="checkbox">✓</span> Subscribe to the studio journal</div>
+          <div class="checkline"><span class="radio"></span> Ship to India</div>
+          <div class="checkline"><span class="radio off"></span> Ship internationally</div>
+        </div>
+        <p class="t-overline" style="margin-bottom:10px;">Quantity stepper</p>
+        <div class="stepper" role="group" aria-label="Quantity">
+          <button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section class="block" id="cards">
+  <div class="wrap">
+    <div class="section-head"><h2>Cards</h2><p>Surface, subtle border, large radius. Interactive cards lift on hover. Product actions must be visible on touch and focus — never hover-only.</p></div>
+    <div class="grid cols-4">
+      <div class="card product-card interactive">
+        <div class="ph"><div class="actions"><button class="btn btn-primary btn-sm" style="flex:1;">Add</button></div></div>
+        <h4>Amber Horizon Vessel</h4>
+        <div class="dim">12″ × 12″ × 14″</div>
+        <div class="price">$480</div>
+      </div>
+      <div class="card interactive">
+        <p class="t-overline">The Journal</p>
+        <h4 class="t-h4" style="margin:10px 0;">Glaze &amp; reduction</h4>
+        <p class="t-caption">How the same recipe reads warmer from a reduction kiln.</p>
+        <div style="margin-top:16px;"><button class="btn btn-link">Read more</button></div>
+      </div>
+      <div class="card stat-card">
+        <div class="lbl">Revenue</div>
+        <div class="val">$24,180</div>
+        <div class="delta">▲ 12.4% vs last month</div>
+      </div>
+      <div class="card feature">
+        <p class="t-overline">Featured</p>
+        <h4 class="t-h4" style="margin:10px 0;">Winter Exhibition</h4>
+        <p class="t-caption" style="color:var(--text-secondary);">A feature card fills with a warm surface and sits on white so it always reads.</p>
+      </div>
+    </div>
+
+    <p class="t-overline" style="margin:32px 0 14px;">Status pills</p>
+    <div class="btn-cluster">
+      <span class="pill success">Available</span>
+      <span class="pill warning">Low stock</span>
+      <span class="pill error">Sold out</span>
+      <span class="pill info">Made to order</span>
+      <span class="pill neutral">Draft</span>
+    </div>
+  </div>
+</section>
+
+<!-- OVERLAYS -->
+<section class="block" id="overlays">
+  <div class="wrap">
+    <div class="section-head"><h2>Modal &amp; dropdown</h2><p>Both built on Radix primitives — focus trap, Escape, scroll-lock, keyboard nav. The cart drawer should migrate onto the same dialog contract.</p></div>
+    <div class="grid cols-2" style="align-items:start;">
+      <div>
+        <p class="t-overline" style="margin-bottom:14px;">Modal (dialog)</p>
+        <button class="btn btn-primary" onclick="document.getElementById('m').classList.add('open')">Open modal</button>
+        <div class="note" style="margin-top:16px;">Overlay: ink/40 + blur · panel radius-2xl · shadow-lift · fade + scale 250ms. Mobile → bottom sheet.</div>
+      </div>
+      <div>
+        <p class="t-overline" style="margin-bottom:14px;">Dropdown / menu</p>
+        <div class="menu">
+          <div class="mlabel">Sort by</div>
+          <div class="mitem sel">Featured</div>
+          <div class="mitem">Newest</div>
+          <div class="mitem">Price: low to high</div>
+          <div class="sep"></div>
+          <div class="mitem">Reset</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOASTS -->
+<section class="block" id="toasts">
+  <div class="wrap">
+    <div class="section-head"><h2>Toast notifications</h2><p>New component. Semantic accent bar + tinted icon, auto-dismiss (errors sticky), role=status / role=alert, slide-in with reduced-motion fallback.</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px; max-width:360px; margin-bottom:24px;">
+      <div class="toast success"><div class="ticon">✓</div><div class="tbody"><b>Added to your bag</b><span>Amber Horizon Vessel — $480</span></div><button class="tx">×</button></div>
+      <div class="toast warning"><div class="ticon">!</div><div class="tbody"><b>Only one left</b><span>This piece is one of a kind.</span></div><button class="tx">×</button></div>
+      <div class="toast error"><div class="ticon">×</div><div class="tbody"><b>Payment failed</b><span>Your card was declined. Try another method.</span></div><button class="tx">×</button></div>
+      <div class="toast info"><div class="ticon">i</div><div class="tbody"><b>Made to order</b><span>Ships in 3–4 weeks.</span></div><button class="tx">×</button></div>
+    </div>
+    <div class="btn-cluster">
+      <button class="btn btn-outline btn-sm" onclick="fireToast('success','Added to your bag','Sage Bloom Vase — $260')">Trigger success</button>
+      <button class="btn btn-outline btn-sm" onclick="fireToast('error','Something went wrong','Please try again.')">Trigger error</button>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    Kopal Seth Studio — Design System v1.0 · Reference deliverable. Tokens shown here are documented in <code>DESIGN-SYSTEM.md</code> and are not yet wired into the application code.
+  </div>
+</footer>
+
+<!-- Modal markup -->
+<div class="overlay" id="m" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
+    <div class="modal-head">
+      <div><h3 id="mt">Remove this piece?</h3><p class="sub">This will remove it from your bag.</p></div>
+      <button class="x" aria-label="Close" onclick="document.getElementById('m').classList.remove('open')">×</button>
+    </div>
+    <div class="body">Amber Horizon Vessel will be removed from your bag. You can add it again while it's still available.</div>
+    <div class="foot">
+      <button class="btn btn-ghost" onclick="document.getElementById('m').classList.remove('open')">Cancel</button>
+      <button class="btn btn-destructive" onclick="document.getElementById('m').classList.remove('open')">Remove</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-stack"></div>
+
+<script>
+  const RAMPS = {
+    clay:[['50','#FBF7F2'],['100','#F5EDE2'],['200','#EADCC8'],['300','#DCC6A6'],['400','#C9A97D'],['500','#B48B5C'],['600','#9A7148'],['700','#7C5A38']],
+    terracotta:[['50','#FBEEE8'],['100','#EFDACB'],['300','#D8A582'],['500','#B76E4D'],['600','#9C5A3C'],['700','#7E4831']],
+    sand:[['50','#FAF8F5'],['100','#F2EDE6'],['200','#E5DCCE'],['300','#D5C8B4']],
+    stone:[['50','#F7F6F4'],['100','#ECEBE8'],['200','#D9D7D1'],['300','#B8B5AD'],['400','#8A8880'],['500','#6B6A64'],['600','#52514C'],['700','#3A3935']],
+    success:[['50','#F1F5EC'],['100','#E1EAD6'],['300','#B9C99E'],['500','#6E8B57'],['600','#56703F'],['700','#415530']],
+    warning:[['50','#FBF3E1'],['100','#F6E7C2'],['300','#E4C275'],['500','#C08A2E'],['600','#9A6C1C'],['700','#78530F']],
+    error:[['50','#FBEBE6'],['100','#F6D8CC'],['300','#E1A48A'],['500','#C0553A'],['600','#A2402A'],['700','#7E3021']],
+  };
+  function lum(hex){const c=hex.replace('#','');const r=parseInt(c.substr(0,2),16)/255,g=parseInt(c.substr(2,2),16)/255,b=parseInt(c.substr(4,2),16)/255;const f=x=>x<=0.03928?x/12.92:Math.pow((x+0.055)/1.055,2.4);return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b);}
+  Object.entries(RAMPS).forEach(([name,steps])=>{
+    const el=document.getElementById(name); if(!el)return;
+    el.innerHTML=steps.map(([k,hex])=>{
+      const dark=lum(hex)>0.5; const tc=dark?'#111111':'#ffffff';
+      return `<div class="step" style="background:${hex}; color:${tc}"><b>${name}-${k}</b><small>${hex}</small></div>`;
+    }).join('');
+  });
+
+  const ROLES=[
+    ['bg-base','#FFFFFF','Default page background',''],
+    ['bg-subtle','#FAF8F5 (sand-50)','Alternating sections',''],
+    ['surface-sunken','#F2EDE6 (sand-100)','Inset panels',''],
+    ['text-primary','#111111 (ink)','Headings, body','AA 18:1'],
+    ['text-secondary','#52514C (stone-600)','Supporting copy','AA 8:1'],
+    ['text-muted','#6B6A64 (stone-500)','Captions, eyebrows','AA 4.7:1'],
+    ['border-default','rgba(17,17,17,.12)','Inputs, cards',''],
+    ['border-strong','rgba(17,17,17,.20)','Outline buttons',''],
+    ['border-focus','#B48B5C (clay-500)','Focus ring',''],
+  ];
+  document.getElementById('roles').innerHTML=ROLES.map(([k,v,u,aa])=>{
+    const col=v.split(' ')[0];
+    return `<div class="role-row"><div class="dot" style="background:${col}"></div><div class="rk">${k}</div><div class="rv">${v} · ${u}</div>${aa?`<div class="badge-aa">${aa}</div>`:''}</div>`;
+  }).join('');
+
+  const SPACE=[['0.5',2],['1',4],['2',8],['3',12],['4',16],['5',20],['6',24],['8',32],['10',40],['12',48],['16',64],['24',96]];
+  document.getElementById('spacescale').innerHTML=SPACE.map(([t,px])=>
+    `<div class="space-row"><div class="lbl">${t} · ${px}px</div><div class="bar" style="width:${px}px"></div></div>`).join('');
+
+  const RADII=[['xs','4px'],['sm','8px'],['md','12px'],['lg','16px'],['xl','24px'],['2xl','32px'],['3xl','40px'],['full','9999px']];
+  document.getElementById('radiustiles').innerHTML=RADII.map(([t,v])=>
+    `<div class="tile"><div class="demo" style="border-radius:${v==='9999px'?'9999px':v}; height:${v==='9999px'?'48px':'80px'}; ${v==='9999px'?'width:80px;':''}"></div><div><div class="tname">radius-${t}</div><div class="tval">${v}</div></div></div>`).join('');
+
+  const SHADOWS=[['xs','var(--shadow-xs)'],['card','var(--shadow-card)'],['soft','var(--shadow-soft)'],['glass','var(--shadow-glass)'],['lift','var(--shadow-lift)']];
+  document.getElementById('shadowtiles').innerHTML=SHADOWS.map(([t,v])=>
+    `<div class="tile shadow-tile" style="background:transparent; border:none;"><div class="demo" style="box-shadow:${v}"></div><div><div class="tname">shadow-${t}</div></div></div>`).join('');
+
+  const ICONS={success:'✓',error:'×',warning:'!',info:'i'};
+  function fireToast(type,title,desc){
+    const stack=document.getElementById('toast-stack');
+    const el=document.createElement('div');
+    el.className='toast '+type+' live';
+    el.setAttribute('role', type==='error'||type==='warning'?'alert':'status');
+    el.innerHTML=`<div class="ticon">${ICONS[type]}</div><div class="tbody"><b>${title}</b><span>${desc}</span></div><button class="tx" aria-label="Dismiss">×</button>`;
+    el.querySelector('.tx').onclick=()=>el.remove();
+    stack.appendChild(el);
+    if(type!=='error') setTimeout(()=>el.remove(),5000);
+  }
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.getElementById('m').classList.remove('open'); });
+</script>
+</body>
+</html>

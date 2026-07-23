@@ -1,0 +1,75 @@
+// Kopal Seth Studio — Prisma schema
+//
+// Scope note: this intentionally does NOT model Product/Category yet.
+// The catalog still lives in `lib/products.ts` as static data, and
+// migrating it to the database is a separate, bigger step best done
+// once there's a real Postgres instance to test against (this schema
+// was authored without database access — see README "Phase 9" notes).
+//
+// What *is* wired end-to-end: Stripe webhook → `services/orders.ts` →
+// this schema, so real orders get persisted once DATABASE_URL is set.
+// Everything here is additive — the site runs identically without a
+// database; see `lib/db.ts#isDatabaseConfigured`.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FULFILLED
+  CANCELLED
+  REFUNDED
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  stripeSessionId   String      @unique
+  status            OrderStatus @default(PENDING)
+
+  customerEmail     String?
+  customerName      String?
+
+  /// Cents, matching Stripe's integer-cents convention.
+  subtotalCents     Int
+  discountCents     Int         @default(0)
+  shippingCents     Int         @default(0)
+  totalCents        Int
+  currency          String      @default("usd")
+  couponCode        String?
+
+  /// Clerk user id, if the buyer was signed in. Nullable — guest
+  /// checkout is allowed, and there's no FK to a local User table since
+  /// Clerk is the source of truth for accounts.
+  clerkUserId       String?
+
+  items             OrderItem[]
+
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([clerkUserId])
+  @@index([customerEmail])
+}
+
+model OrderItem {
+  id            String   @id @default(cuid())
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId       String
+
+  /// Snapshot fields, not a live FK to a Product table — the catalog
+  /// isn't in the database yet, and even once it is, order line items
+  /// should always reflect price/title *at the time of purchase*.
+  productSlug   String
+  title         String
+  unitPriceCents Int
+  quantity      Int
+
+  @@index([orderId])
+}
