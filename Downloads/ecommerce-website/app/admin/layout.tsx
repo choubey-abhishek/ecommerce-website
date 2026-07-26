@@ -55,7 +55,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     );
   }
 
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) {
     redirect("/sign-in");
   }
