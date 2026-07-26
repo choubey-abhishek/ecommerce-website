@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { isClerkConfigured } from "@/lib/auth-config";
 import { AccountNav } from "@/components/account/account-nav";
 
-export default function AccountLayout({ children }: { children: ReactNode }) {
+export default async function AccountLayout({ children }: { children: ReactNode }) {
   if (!isClerkConfigured) {
     return (
       <div className="flex min-h-[70vh] items-center pt-24">
@@ -36,7 +36,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
 
   // Middleware already protects /account(.*), but a direct server-side
   // check here is cheap defense-in-depth against a misconfigured matcher.
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) {
     redirect("/sign-in");
   }
