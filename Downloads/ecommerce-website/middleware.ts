@@ -13,8 +13,8 @@ const isProtectedRoute = createRouteMatcher(["/account(.*)", "/admin(.*)"]);
  * Clerk yet.
  */
 export default isClerkConfigured
-  ? clerkMiddleware((auth, req) => {
-      if (isProtectedRoute(req)) auth().protect();
+  ? clerkMiddleware(async (auth, req) => {
+      if (isProtectedRoute(req)) await auth.protect();
     })
   : function middleware() {
       return NextResponse.next();
