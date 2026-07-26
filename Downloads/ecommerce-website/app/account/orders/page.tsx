@@ -30,7 +30,7 @@ function formatDate(date: Date) {
 }
 
 export default async function OrdersPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
   const orders = userId ? await getOrdersForUser(userId) : [];
 
   if (orders.length === 0) {
