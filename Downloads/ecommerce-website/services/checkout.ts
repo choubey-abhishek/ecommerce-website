@@ -77,7 +77,7 @@ export async function createCheckoutSession(
   if (isClerkConfigured) {
     try {
       const { auth } = await import("@clerk/nextjs/server");
-      clerkUserId = auth().userId ?? undefined;
+      clerkUserId = (await auth()).userId ?? undefined;
     } catch {
       // Not in a Clerk-recognized request context — proceed as guest.
     }
