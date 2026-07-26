@@ -1,24 +1,14 @@
 import { NextResponse } from "next/server";
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { isClerkConfigured } from "@/lib/auth-config";
-
-const isProtectedRoute = createRouteMatcher(["/account(.*)", "/admin(.*)"]);
 
 /**
- * Route protection only activates once real Clerk keys exist (see
- * `lib/auth-config.ts`). `clerkMiddleware()` is only ever *called* in
- * the configured branch — merely importing it is safe, but invoking it
- * without keys throws on every request, which would take down the
- * entire site rather than just /account for anyone who hasn't set up
- * Clerk yet.
+ * Middleware is intentionally edge-safe and does not import Clerk server-side
+ * helpers. Route protection and authentication checks are handled in the
+ * account/admin layouts and page components instead, which keeps this module
+ * compatible with Vercel's Edge Runtime.
  */
-export default isClerkConfigured
-  ? clerkMiddleware(async (auth, req) => {
-      if (isProtectedRoute(req)) await auth.protect();
-    })
-  : function middleware() {
-      return NextResponse.next();
-    };
+export function middleware() {
+  return NextResponse.next();
+}
 
 export const config = {
   // Excludes Next internals, static files, and /api/webhooks — Stripe's
